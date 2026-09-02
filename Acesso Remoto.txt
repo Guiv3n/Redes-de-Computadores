@@ -1,0 +1,15 @@
+Acesso Remoto
+Modo texto
+-Telnet
+-SSH
+
+
+Modo Gráfico:
+-RDP
+-UNC
+
+Instala as coisas
+
+Configurar o IP, puxar da máquina que quer acessar(o cliente)
+
+ssh -l <usuário> <ip>

@@ -1,0 +1,5 @@
+Compartilhamento de Arquivos
+
+-NFS
+-FTP/SFTP
+-Samba

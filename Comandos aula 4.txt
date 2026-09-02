@@ -1,0 +1,9 @@
+Comandos aula 4
+Executar esse comando uma única vez pra habilitar o NAT: 
+iptables -t nat -A POSTROUTING -o enpc0s3 -s 192.168.10.0/24 -j MASQUERADE 
+
+iptables-save > /etc/iptables/rules.v4
+
+vi /etc/sysctl
+
+cat /etc/iptables/rules.v4

@@ -1,0 +1,15 @@
+vi /etc/network/interfaces
+
+ifdown <nome_da_maquina> -> desliga a maquina
+
+source .bashrc -> procurar comandos
+
+ifup <nome_da_maquina> -> liga a maquina
+
+apt-get install isc-dhcp-server 
+ip a show <nome_da_ maquina> -> mostra o Ip  da maquina
+
+service isc-dhcp-server restart
+vi /etc/default/isc-dhcp-server -> configura o DHCP
+vi /etc/default/isc-dhcpd.conf -> vai pra tela dos IPs
+vi /etc/dhcp/dhcpd.conf

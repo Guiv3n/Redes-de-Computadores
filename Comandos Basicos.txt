@@ -1,0 +1,42 @@
+Basicos:
+usuari@nomedamaquina: $ = user padrão, # = admin
+su -  ->loga com usuário admin
+ls -> lista o diretório
+pwd -> exibe o diretório atual
+mkdir <nome>-> cria diretório
+cd -> vai pro direitorio digitado
+cd .. -> volta um nível
+whoami -> qual usuário ta lgoado
+ip a -> lista as configurações de rede
+hostname -> nome da maquina 
+
+
+
+Instalação de programas:
+apt-get update
+apt-get install <nome_programa>
+
+
+
+VIM:
+vi <nome arquivo.txt> -> cria arquivo
+tecla I -> inserção
+:wq -> salvar e sair
+:q! -> sair sem salvar
+cp <arquivo_original> <novo_arquivo> -> faz uma copia
+mv <nome_arquivo_original> <nome_arquivo_novo> -> renomeia
+cat <nome_arquivo> -> exibe conteúdo do arquivo
+vi .basrc
+
+Permissões:
+ls - l -> verifica permissões de um arquivo
+r -> read
+w -> write
+x -> executável
+
+
+
+-rw-r--r-- 
+
+fora do modo de inserção -> dd -> apaga a linha
+fora do modo de inserção -> u -> volta o que fez antes(cntr + z)

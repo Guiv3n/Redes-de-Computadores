@@ -1,0 +1,69 @@
+================================================================================
+GUIA DE COMANDOS - REDES II (CONTINUACAO ACESSO REMOTO: CLIENTE CIFS/SAMBA)
+================================================================================
+
+1. CONFIGURACAO DE CLIENTE E PONTOS DE MONTAGEM
+--------------------------------------------------------------------------------
+[Acao/URL]        smb://<ip_do_servidor>/
+[Descricao]       Acesso via navegador de arquivos grafico (ex: Nautilus) para
+                  navegar pelos compartilhamentos de rede sem usar o terminal.
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin
+
+[Comando]         apt-get install cifs-utils vim
+[Descricao]       Instala os utilitarios necessarios para montagem de sistemas de
+                  arquivos SMB/CIFS (mount.cifs) e o editor de texto Vim.
+[Onde usar]       Cliente
+[Nivel usuario]   Admin (root)
+
+[Comando]         vi .samba (geralmente criado como /root/.samba ou ~/.samba)
+[Descricao]       Arquivo texto com credenciais de rede:
+                  user=aluno
+                  password=aluno
+                  workgroup=RC2
+                  Permite autenticar a montagem sem expor a senha no comando.
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin
+
+[Comando]         chmod 600 .samba
+[Descricao]       Aplica permissao rw------- no arquivo de credenciais, garantindo
+                  que apenas o dono possa ler e alterar a senha.
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin (dono do arquivo)
+
+[Comando]         vi /etc/fstab
+[Descricao]       Arquivo de configuracao da tabela de montagem do sistema.
+                  Permite configurar a montagem automatica e persistente da pasta
+                  compartilhada no boot da maquina cliente.
+[Onde usar]       Cliente
+[Nivel usuario]   Admin (root)
+
+[Comando]         chmod -R 777 /mnt/home
+[Descricao]       Concede permissao total na pasta local do cliente usada como ponto
+                  de montagem para evitar restricoes locais de leitura/escrita.
+[Onde usar]       Cliente
+[Nivel usuario]   Admin (root)
+
+[Acao Grafica]    Adicionar Marcador no gerenciador de arquivos
+[Descricao]       Cria um atalho no painel lateral da interface grafica apontando
+                  para /mnt/home para facilitar o acesso do usuario aos arquivos.
+[Onde usar]       Cliente
+[Nivel usuario]   Comum
+
+
+2. COMO FUNCIONA O ARQUIVO /etc/fstab
+--------------------------------------------------------------------------------
+O arquivo /etc/fstab define como discos e compartilhamentos remotos sao montados
+ao ligar o computador.
+
+Sintaxe padrao para montagem persistente CIFS:
+//<IP_DO_SERVIDOR>/<COMPARTILHAMENTO>  /mnt/home  cifs  credentials=/root/.samba,iocharset=utf8,_netdev  0  0
+
+Parametros:
+- //<IP>/<COMPARTILHAMENTO>: Caminho do recurso exportado no servidor.
+- /mnt/home                : Ponto de montagem local no cliente.
+- cifs                     : Tipo do sistema de arquivos remoto.
+- credentials=...          : Caminho do arquivo protegido com usuario e senha.
+- _netdev                  : Garante que a montagem so ocorra apos a rede subir no boot.
+- 0 0                      : Desativa rotinas de dump e fsck para compartilhamento de rede.
+================================================================================

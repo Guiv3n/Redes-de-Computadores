@@ -1,0 +1,73 @@
+================================================================================
+GUIA DE COMANDOS - REDES II (AULA 3: INTERFACES E SERVIDOR DHCP)
+================================================================================
+
+1. CONFIGURACAO E CONTROLE DE INTERFACES DE REDE
+--------------------------------------------------------------------------------
+[Comando]       vi /etc/network/interfaces
+[Descricao]     Abre o arquivo principal de configuracao de rede no Debian/Ubuntu
+                para definir parametros como IP estatico, DHCP, gateway e mascara.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Admin (root)
+
+[Comando]       ifdown <interface>
+[Descricao]     Desativa/desliga uma interface de rede especifica (ex: eth0, enp0s3).
+                *Observacao: Na anotacao constava <nome_da_maquina>, mas o parametro
+                operacional e o nome da interface de rede.*
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Admin (root)
+
+[Comando]       ifup <interface>
+[Descricao]     Ativa/sobe a interface de rede indicada, aplicando as definicoes
+                presentes em /etc/network/interfaces.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Admin (root)
+
+[Comando]       ip a show <interface>
+[Descricao]     Filtra e exibe o endereco IP e os parametros de uma interface de
+                rede especifica.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       source .bashrc
+[Descricao]     Recarrega o arquivo de inicializacao do terminal (.bashrc) na sessao
+                atual sem precisar encerrar e abrir o terminal novamente.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+
+2. INSTALACAO E GERENCIAMENTO DO SERVICO DHCP
+--------------------------------------------------------------------------------
+[Comando]       apt-get install isc-dhcp-server
+[Descricao]     Baixa e instala o pacote do servidor DHCP (isc-dhcp-server).
+[Onde usar]     Servidor
+[Nivel usuario] Admin (root)
+
+[Comando]       service isc-dhcp-server restart
+[Descricao]     Reinicia o daemon/servico do DHCP para validar e carregar novas
+                configuracoes alteradas nos arquivos .conf.
+[Onde usar]     Servidor
+[Nivel usuario] Admin (root)
+
+
+3. ARQUIVOS DE CONFIGURACAO DO DHCP
+--------------------------------------------------------------------------------
+[Comando]       vi /etc/default/isc-dhcp-server
+[Descricao]     Define parametros basicos do servico, principalmente qual interface
+                de rede atendera as requisicoes (diretiva INTERFACESv4="...").
+[Onde usar]     Servidor
+[Nivel usuario] Admin (root)
+
+[Comando]       vi /etc/dhcp/dhcpd.conf
+[Descricao]     Arquivo de configuracao central do DHCP: define sub-redes, range
+                (faixa de IPs para distribuicao), roteador padrao (gateway),
+                DNS e tempo de concessao (lease time).
+[Onde usar]     Servidor
+[Nivel usuario] Admin (root)
+
+[Comando]       vi /etc/default/isc-dhcpd.conf
+[Descricao]     Anotacao de aula equivalente; o caminho padrao e oficial no Debian
+                para configurar o escopo de IPs e o /etc/dhcp/dhcpd.conf.
+[Onde usar]     Servidor
+[Nivel usuario] Admin (root)
+================================================================================

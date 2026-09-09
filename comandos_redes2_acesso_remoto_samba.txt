@@ -1,0 +1,134 @@
+================================================================================
+GUIA DE COMANDOS - REDES II (ACESSO REMOTO E COMPARTILHAMENTO SAMBA/CIFS)
+================================================================================
+
+1. PANORAMA TEORICO: PROTOCOLOS
+--------------------------------------------------------------------------------
+Acesso Remoto:
+  - Modo Texto (CLI):
+      * Telnet: Acesso remoto legado; nao utiliza criptografia (dados em texto claro).
+      * SSH (Secure Shell): Padrão moderno criptografado (porta padrao TCP 22).
+  - Modo Grafico (GUI):
+      * RDP (Remote Desktop Protocol): Padrao da Microsoft para desktops remotos.
+      * VNC (Virtual Network Computing): Padrao multiplataforma (na anotacao original
+        constava 'UNC', que se refere ao formato de caminhos de rede \\servidor\pasta).
+
+Compartilhamento de Arquivos:
+  - NFS (Network File System): Nativo do Linux/Unix para alta performance de rede.
+  - FTP / SFTP: Protocolo de transferencia de arquivos (SFTP e protegido via SSH).
+  - Samba (SMB/CIFS): Protocolo de interoperabilidade que permite ao Linux atender
+    compartilhamentos de arquivos e impressoras compativeis com Windows e Linux.
+
+
+2. ACESSO REMOTO VIA SSH
+--------------------------------------------------------------------------------
+[Comando/Arquivo] vi /etc/ssh/sshd_config
+[Descricao]       Arquivo de configuracao do daemon SSH no servidor. Utilizado para
+                  trocar a porta padrao (ex: de 22 para outra alta), restringir
+                  acesso direto do root e ajustar metodos de autenticacao.
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         service ssh restart (ou systemctl restart ssh)
+[Descricao]       Reinicia o servico SSH no servidor para aplicar alteracoes no arquivo.
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         ssh -l <usuario> <ip_servidor> (ou ssh <usuario>@<ip_servidor>)
+[Descricao]       Abre uma sessao segura de terminal remoto na maquina servidora.
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin
+
+[Comando]         ssh -p <porta> -l <usuario> <ip_servidor>
+[Descricao]       Conecta ao servidor SSH indicando uma porta especifica (-p).
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin
+
+
+3. SERVIDOR SAMBA (LADO SERVIDOR)
+--------------------------------------------------------------------------------
+[Comando]         apt-get install samba
+[Descricao]       Instala o pacote do Samba e os daemons smbd e nmbd.
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         mv /etc/samba/smb.conf /etc/samba/smb.conf.BKP
+[Descricao]       Cria uma copia de backup do arquivo padrao original do Samba antes
+                  de editar a nova configuracao enxuta.
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         vi /etc/samba/smb.conf
+[Descricao]       Arquivo mestre de configuracao de compartilhamento do Samba.
+                  Contem as secoes:
+                  [global] : grupo de trabalho (workgroup), netbios name, logs, etc.
+                  [homes]  : compartilhamento individual da pasta pessoal de cada usuario.
+                  [publico]: definicao de compartilhamento customizado (caminho,
+                             permissao de escrita, visibilidade).
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         smbpasswd -a <usuario>
+[Descricao]       Cria e cadastra a senha de acesso Samba para um usuario ja existente
+                  no Linux (/etc/passwd). Sem isso o usuario nao consegue se autenticar.
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         chmod -R 777 /mnt/dados
+[Descricao]       Aplica permissao irrestrita de leitura, escrita e execucao na pasta
+                  fisica do servidor para evitar conflitos de permissoes POSIX do disco.
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         service smbd restart
+[Descricao]       Reinicia o daemon smbd (responsavel pelo compartilhamento de arquivos).
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+[Comando]         service nmbd restart
+[Descricao]       Reinicia o daemon nmbd (responsavel pela resolucao de nomes NetBIOS).
+[Onde usar]       Servidor
+[Nivel usuario]   Admin (root)
+
+
+4. CLIENTE SAMBA / CIFS E PONTOS DE MONTAGEM (LADO CLIENTE)
+--------------------------------------------------------------------------------
+[Acao/URL]        smb://<ip_do_servidor>/
+[Descricao]       Caminho digitado na barra de enderecos do navegador de arquivos grafico
+                  (ex: Nautilus) para navegar pelos compartilhamentos de rede.
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin
+
+[Comando]         apt-get install cifs-utils vim
+[Descricao]       Instala os utilitarios necessarios para montagem de sistemas de arquivos
+                  SMB/CIFS (mount.cifs) e o editor vim no cliente.
+[Onde usar]       Cliente
+[Nivel usuario]   Admin (root)
+
+[Comando]         vi .samba (geralmente criado como ~/.samba ou /root/.samba)
+[Descricao]       Arquivo texto contendo as credenciais de autenticacao:
+                  user=usuario
+                  password=senha
+                  workgroup=RC2
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin
+
+[Comando]         chmod 600 .samba
+[Descricao]       Altera a permissao do arquivo de credenciais para que apenas o dono
+                  possa ler e gravar (rw-------), protegendo a senha de outros usuarios.
+[Onde usar]       Cliente
+[Nivel usuario]   Comum ou Admin (o dono do arquivo)
+
+[Comando]         chmod -R 777 /mnt/home
+[Descricao]       Concede permissao total no diretorio local do cliente que servira
+                  de ponto de montagem para a pasta remota.
+[Onde usar]       Cliente
+[Nivel usuario]   Admin (root)
+
+[Comando]         vi /etc/fstab
+[Descricao]       Tabela de montagem do sistema. Configura a montagem persistente
+                  do compartilhamento Samba no boot da maquina cliente:
+                  //IP/compartilhamento  /mnt/ponto  cifs  credentials=/caminho/.samba,_netdev  0  0
+[Onde usar]       Cliente
+[Nivel usuario]   Admin (root)
+================================================================================

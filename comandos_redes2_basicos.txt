@@ -1,0 +1,147 @@
+================================================================================
+GUIA DE COMANDOS BASICOS - REDES II
+================================================================================
+
+1. IDENTIFICACAO DO PROMPT E NIVEIS DE ACESSO
+--------------------------------------------------------------------------------
+- Prompt '$' : Sessao de usuario comum.
+- Prompt '#' : Sessao de superusuario (root / admin).
+
+- Comando: su -
+  * O que e / Pra que serve: Alterna o terminal para o usuario administrador (root),
+    carregando todas as variaveis de ambiente completas de root.
+  * Onde usar: Cliente ou Servidor (em ambas).
+  * Nivel de usuario: Executado pelo usuario Comum (requer a senha do root) para se
+    tornar Admin.
+
+
+2. NAVEGACAO E INFORMACOES DO SISTEMA
+--------------------------------------------------------------------------------
+[Comando]       whoami
+[Descricao]     Retorna o nome exato do usuario autenticado no momento no terminal.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       pwd (Print Working Directory)
+[Descricao]     Exibe o caminho absoluto do diretorio onde voce se encontra atualmente.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       ls
+[Descricao]     Lista os arquivos e diretorios contidos no local atual (ou informado).
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       mkdir <nome>
+[Descricao]     Cria uma nova pasta/diretorio com o nome especificado.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum (na sua home) / Admin (em diretorios do sistema)
+
+[Comando]       cd <nome>
+[Descricao]     Navega / entra no diretorio indicado.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       cd ..
+[Descricao]     Volta exatamente um nivel na arvore de diretorios (pasta pai).
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       hostname
+[Descricao]     Exibe ou define o nome de identificacao da maquina na rede.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Leitura: Comum / Alteracao: Admin
+
+[Comando]       ip a (ou ip addr)
+[Descricao]     Lista todas as interfaces de rede ativas/inativas, enderecos IP
+                (IPv4/IPv6), mascaras e status da interface.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+
+3. GERENCIAMENTO DE PACOTES (DEBIAN / UBUNTU)
+--------------------------------------------------------------------------------
+[Comando]       apt-get update
+[Descricao]     Atualiza a lista local de repositorios e indices de versoes disponiveis
+                para download (nao instala pacotes, apenas sincroniza).
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Apenas Admin (root ou sudo)
+
+[Comando]       apt-get install <programa>
+[Descricao]     Baixa e instala o servico/programa solicitado (ex: OpenSSH, Apache, etc.).
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Apenas Admin (root ou sudo)
+
+
+4. MANIPULACAO DE ARQUIVOS E EDITOR DE TEXTO (VIM / SHELL)
+--------------------------------------------------------------------------------
+[Comando]       vi <arquivo>
+[Descricao]     Abre ou cria um arquivo no editor de texto pelo terminal.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum (arquivos proprios) / Admin (arquivos em /etc/ e do sistema)
+
+[Tecla]         i (dentro do Vim)
+[Descricao]     Entra no Modo de Insercao (permite digitar/editar texto).
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       Esc + :wq (dentro do Vim)
+[Descricao]     Salva as alteracoes (write) e fecha o editor (quit).
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       Esc + :q! (dentro do Vim)
+[Descricao]     Sai imediatamente descartando todas as alteracoes feitas.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       dd (no Vim - modo comando)
+[Descricao]     Recorta/apaga a linha inteira onde o cursor esta posicionado.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       u (no Vim - modo comando)
+[Descricao]     Desfaz a ultima acao realizada (undo / equivalente a Ctrl+Z).
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum ou Admin
+
+[Comando]       cp <origem> <destino>
+[Descricao]     Faz uma copia fisica do arquivo ou pasta para outro local ou nome.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum / Admin (depende da pasta de destino)
+
+[Comando]       mv <origem> <destino>
+[Descricao]     Move um arquivo de diretorio ou renomeia o arquivo.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum / Admin (depende das pastas envolvidas)
+
+[Comando]       cat <arquivo>
+[Descricao]     Imprime todo o conteudo de um arquivo texto diretamente no terminal.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum (se tiver permissao de leitura) ou Admin
+
+[Comando]       vi ~/.bashrc
+[Descricao]     Abre o script de inicializacao do terminal para criar alias, variaveis, etc.
+[Onde usar]     Cliente e Servidor
+[Nivel usuario] Comum (seu proprio perfil) / Admin
+
+
+5. PERMISSOES DE ARQUIVOS NO LINUX
+--------------------------------------------------------------------------------
+- Comando: ls -l
+  * O que e / Pra que serve: Lista arquivos e diretorios em formato detalhado,
+    mostrando tipo, permissoes, proprietario, grupo, tamanho e data.
+  * Onde usar: Cliente e Servidor
+  * Nivel de usuario: Comum ou Admin
+
+- Tipos de Permissao:
+  * r (Read / Leitura)      : Ler arquivo ou listar itens de um diretorio.
+  * w (Write / Escrita)     : Modificar, salvar ou apagar o arquivo.
+  * x (Execute / Execucao)  : Executar como programa/script ou entrar no diretorio (cd).
+
+- Estrutura dos 10 Caracteres (Exemplo: -rw-r--r--):
+  * 1o caractere      : Tipo do item ('-' para arquivo comum, 'd' para diretorio, 'l' para link).
+  * 2o ao 4o caracteres: Permissoes do Dono / Proprietario (User) -> ex: rw- (leitura e escrita).
+  * 5o ao 7o caracteres: Permissoes do Grupo (Group)             -> ex: r-- (somente leitura).
+  * 8o ao 10o caracteres: Permissoes dos Outros (Others)          -> ex: r-- (somente leitura).
+================================================================================

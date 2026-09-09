@@ -1,0 +1,37 @@
+================================================================================
+GUIA DE COMANDOS - REDES II (AULA 4: ROTEAMENTO, NAT E FIREWALL COM IPTABLES)
+================================================================================
+
+1. ROTEAMENTO, NAT E FIREWALL
+--------------------------------------------------------------------------------
+[Comando]       vi /etc/sysctl.conf (ou /etc/sysctl)
+[Descricao]     Arquivo de configuracao de parametros do kernel em runtime.
+                Utilizado para habilitar o repasse de pacotes entre interfaces
+                atraves da diretiva: net.ipv4.ip_forward=1. Sem essa flag ativa,
+                a maquina nao atua como roteador/gateway.
+[Onde usar]     Servidor (Roteador / Gateway)
+[Nivel usuario] Admin (root)
+
+[Comando]       iptables -t nat -A POSTROUTING -o enpc0s3 -s 192.168.10.0/24 -j MASQUERADE
+[Descricao]     Habilita NAT (Network Address Translation) via mascaramento.
+                -t nat       : seleciona a tabela responsavel por traducao de endereco.
+                -A POSTROUTING: insere a regra na saida de pacotes da maquina.
+                -o enpc0s3   : define a interface fisica conectada a Internet/rede externa.
+                -s 192.168.10.0/24: especifica a sub-rede local de origem.
+                -j MASQUERADE: altera o IP de origem dos pacotes para o IP da interface externa.
+[Onde usar]     Servidor (Roteador / Gateway)
+[Nivel usuario] Admin (root)
+
+[Comando]       iptables-save > /etc/iptables/rules.v4
+[Descricao]     Exporta todas as regras ativas de firewall e NAT da memoria RAM
+                diretamente para o arquivo /etc/iptables/rules.v4, garantindo que
+                o servico iptables-persistent restaure as configuracoes apos reiniciar.
+[Onde usar]     Servidor (Roteador / Gateway)
+[Nivel usuario] Admin (root)
+
+[Comando]       cat /etc/iptables/rules.v4
+[Descricao]     Exibe o conteudo do arquivo de regras persistentes do iptables no
+                terminal para auditoria e verificacao de gravacao correta do NAT.
+[Onde usar]     Servidor (Roteador / Gateway)
+[Nivel usuario] Comum ou Admin
+================================================================================
